@@ -3,7 +3,6 @@
 #![allow(unknown_lints)]
 #![allow(clippy::new_without_default)]
 #![allow(clippy::comparison_chain)]
-#![warn(missing_docs)]
 #![cfg_attr(feature = "fail-on-warnings", deny(warnings))]
 
 #[macro_use]

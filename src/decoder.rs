@@ -10,9 +10,9 @@ use crate::util::qr::{QRData, QRError, QRInfo, QRLocation};
 
 /// Struct to hold logic to do the entire decoding
 pub struct Decoder<IMG, PREPD, RESULT> {
-    prepare: Box<dyn Prepare<IMG, PREPD>>,
-    detect: Box<dyn Detect<PREPD>>,
-    qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
+    pub prepare: Box<dyn Prepare<IMG, PREPD>>,
+    pub detect: Box<dyn Detect<PREPD>>,
+    pub qr: ExtractDecode<PREPD, QRLocation, QRData, RESULT, QRError>,
 }
 
 impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
@@ -57,7 +57,10 @@ impl<IMG, PREPD, RESULT> Decoder<IMG, PREPD, RESULT> {
 /// * decode: QRDecoder
 ///
 /// This is meant to provide a good balance between speed and accuracy
-pub fn default_decoder<D>() -> Decoder<D, GrayImage, String> where D: GenericImageView<Pixel = Rgba<u8>> {
+pub fn default_decoder<D>() -> Decoder<D, GrayImage, String>
+where
+    D: GenericImageView<Pixel = Rgba<u8>>,
+{
     default_builder().build()
 }
 
@@ -71,7 +74,10 @@ pub fn default_decoder<D>() -> Decoder<D, GrayImage, String> where D: GenericIma
 /// * decode: QRDecoderWithInfo
 ///
 /// This is meant to provide a good balance between speed and accuracy
-pub fn default_decoder_with_info<D>() -> Decoder<D, GrayImage, (String, QRInfo)> where D: GenericImageView<Pixel = Rgba<u8>> {
+pub fn default_decoder_with_info<D>() -> Decoder<D, GrayImage, (String, QRInfo)>
+where
+    D: GenericImageView<Pixel = Rgba<u8>>,
+{
     default_builder_with_info().build()
 }
 
@@ -159,7 +165,10 @@ impl<IMG, PREPD, RESULT> DecoderBuilder<IMG, PREPD, RESULT> {
 /// * decode: QRDecoder
 ///
 /// The builder can then be customised before creating the Decoder
-pub fn default_builder<D>() -> DecoderBuilder<D, GrayImage, String> where D: GenericImageView<Pixel = Rgba<u8>> {
+pub fn default_builder<D>() -> DecoderBuilder<D, GrayImage, String>
+where
+    D: GenericImageView<Pixel = Rgba<u8>>,
+{
     let mut db = DecoderBuilder::new();
 
     db.prepare(Box::new(BlockedMean::new(5, 7)));
@@ -179,7 +188,10 @@ pub fn default_builder<D>() -> DecoderBuilder<D, GrayImage, String> where D: Gen
 /// * decode: QRDecoderWithInfo
 ///
 /// The builder can then be customised before creating the Decoder
-pub fn default_builder_with_info<D>() -> DecoderBuilder<D, GrayImage, (String, QRInfo)> where D: GenericImageView<Pixel = Rgba<u8>> {
+pub fn default_builder_with_info<D>() -> DecoderBuilder<D, GrayImage, (String, QRInfo)>
+where
+    D: GenericImageView<Pixel = Rgba<u8>>,
+{
     let mut db = DecoderBuilder::new();
 
     db.prepare(Box::new(BlockedMean::new(5, 7)));
@@ -192,7 +204,7 @@ pub fn default_builder_with_info<D>() -> DecoderBuilder<D, GrayImage, (String, Q
     db
 }
 
-struct ExtractDecode<PREPD, LOC, DATA, RESULT, ERROR> {
-    extract: Box<dyn Extract<PREPD, LOC, DATA, ERROR>>,
-    decode: Box<dyn Decode<DATA, RESULT, ERROR>>,
+pub struct ExtractDecode<PREPD, LOC, DATA, RESULT, ERROR> {
+    pub extract: Box<dyn Extract<PREPD, LOC, DATA, ERROR>>,
+    pub decode: Box<dyn Decode<DATA, RESULT, ERROR>>,
 }
