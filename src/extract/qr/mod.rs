@@ -55,8 +55,8 @@ impl Extract<GrayImage, QRLocation, QRData, QRError> for QRExtractor {
             let mut line = start - 3.0 * dx;
 
             for _ in 0..size {
-                let x = line.x.round() as u32;
-                let y = line.y.round() as u32;
+                let x = (line.x as u32).min(prepared.width() - 1);
+                let y = (line.y as u32).min(prepared.height() - 1);
                 let pixel = prepared.get_pixel(x, y)[0];
 
                 #[cfg(feature = "debug-images")]
@@ -293,11 +293,11 @@ fn is_alignment(prepared: &GrayImage, p: Point, dx: Delta, dy: Delta, scale: f64
         for i in -2..3 {
             for j in -2..3 {
                 let pp = p + f64::from(i) * dx + f64::from(j) * dy;
-		let x = pp.x.round() as u32;
-		let y = pp.y.round() as u32;
-		if x < img.width() && y < img.height() {
-	                img.put_pixel(x, y, Rgb([255, 0, 0]));
-		}
+                let x = pp.x.round() as u32;
+                let y = pp.y.round() as u32;
+                if x < img.width() && y < img.height() {
+                    img.put_pixel(x, y, Rgb([255, 0, 0]));
+                }
             }
         }
 
